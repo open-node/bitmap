@@ -14,8 +14,15 @@ div, h3 {
 #code {
   float:left;
   width: 400px;
+  position: relative;
+}
+#code .store {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
 #code .tips {
+  font-size: 12px;
   margin-bottom: 10px;
   background: #f6f6f6;
   border-radius: 2px;
@@ -51,7 +58,7 @@ div, h3 {
   您的浏览器太老了，不支持canvas，请用最新版chrome打开此页
 </canvas>
 <div id="code">
-  <div class="tips">参数有 x, y, f 分别代表x坐标，y坐标，帧计数</div>
+  <div class="tips">参数有 x, y, f 分别代表x坐标，y坐标，帧计数, 画布大小 600px * 400 px, 左上角坐标(0, 0) 右下角 (599, 399)</div>
   <div class="box">
     <h3>Red</h3>
     <textarea id="red" rows="3">return (Math.random() * 256) % 256</textarea>
@@ -64,9 +71,15 @@ div, h3 {
     <h3>Blue</h3>
     <textarea id="blue" rows="3">return (Math.random() * 256) % 256</textarea>
   </div>
-  <button id="draw">绘制</button>
-  <button id="play">播放</button>
-  <button id="stop">停止</button>
+  <div class="operate">
+    <button id="draw">绘制</button>
+    <button id="play">播放</button>
+    <button id="stop">停止</button>
+  </div>
+  <div class="store">
+    <button id="save">存储</button>
+    <button id="load">加载</button>
+  </div>
 </div>
 <script src="./demo.js"></script>
 </body>

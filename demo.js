@@ -83,7 +83,6 @@ function Bitmap(canvas) {
    * @return {void}
    */
   const stop = () => {
-    fno = 0;
     animating = false;
   };
 
