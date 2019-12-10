@@ -1,0 +1,15 @@
+{
+  "name": "rgb-bitmap",
+  "version": "0.1.0",
+  "description": "rgb-bitmap",
+  "main": "./src/bitmap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:demo": "browserify src/demo.js > demo.js && uglifyjs demo.js > demo.min.js"
+  },
+  "author": "Redstone Zhao",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.2.2"
+  }
+}
