@@ -58,6 +58,7 @@
     "no-lone-blocks": 0,
     "yoda": 0,
     "no-plusplus": 0,
+    "no-new-func": 0,
     "no-cond-assign": 0
   },
   "globals": {

@@ -2,24 +2,60 @@
 <head>
 <title>RGB Bitmap 图形绘制</title>
 <style>
-#tools {
+div, h3 {
+  padding: 0px;
+  margin: 0px;
+}
+#my-canvas {
   background: #f6f6f6;
-  padding: 20px;
-  width: 400px;
-  position: fixed;
-  top: 30px;
-  right: 30px;
+  float:left;
+  margin-right: 10px;
 }
 #code {
-  height: 300px;
-  overflow-y: auto;
+  float:left;
+  width: 400px;
+}
+#code .box {
+  border: 1px solid #eee;
+  margin-bottom: 10px;
+  display: block;
+  width: 100%;
+  height: 100px;
+}
+#code .box h3 {
+  padding: 0 10px;
+  background: #f6f6f6;
+  border-bottom: 1px solid #eee;
+  display: block;
+  line-height: 26px;
+  height: 26px;
+}
+#code .box div {
+  padding: 5px 10px;
 }
 </style>
 </head>
 <body>
-<canvas width="600" height="400">
+<canvas id="my-canvas" width="600" height="400">
   您的浏览器太老了，不支持canvas，请用最新版chrome打开此页
 </canvas>
+<div id="code">
+<div class="box">
+  <h3>Red</h3>
+  <div id="red" contenteditable="true">return (Math.random() * 256) % 256</div>
+</div>
+<div class="box">
+  <h3>Green</h3>
+  <div id="green" contenteditable="true">return (Math.random() * 256) % 256</div>
+</div>
+<div class="box">
+  <h3>Blue</h3>
+  <div id="blue" contenteditable="true">return (Math.random() * 256) % 256</div>
+</div>
+<button id="draw">绘制</button>
+<button id="play">播放</button>
+<button id="stop">停止</button>
+</div>
 <script src="./demo.js"></script>
 </body>
 </html>

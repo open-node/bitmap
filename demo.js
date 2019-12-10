@@ -1,3 +1,4 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /**
  * @param {dom} canvas canvas dom object
  * @class
@@ -90,3 +91,46 @@ function Bitmap(canvas) {
 }
 
 module.exports = Bitmap;
+
+},{}],2:[function(require,module,exports){
+const Bitmap = require("../");
+
+(() => {
+  const canvas = document.getElementById("my-canvas");
+  const bitmap = Bitmap(canvas);
+  window.bitmap = bitmap;
+
+  const $red = document.getElementById("red");
+  const $green = document.getElementById("green");
+  const $blue = document.getElementById("blue");
+
+  const $draw = document.getElementById("draw");
+  const $play = document.getElementById("play");
+  const $stop = document.getElementById("stop");
+
+  const getFns = () => {
+    const red = new Function("x", "y", "f", $red.innerText);
+    const green = new Function("x", "y", "f", $green.innerText);
+    const blue = new Function("x", "y", "f", $blue.innerText);
+
+    return { red, green, blue };
+  };
+
+  $draw.onclick = () => {
+    const { red, green, blue } = getFns();
+    bitmap.init(red, green, blue);
+    bitmap.draw();
+  };
+
+  $play.onclick = () => {
+    const { red, green, blue } = getFns();
+    bitmap.init(red, green, blue);
+    bitmap.play();
+  };
+
+  $stop.onclick = () => {
+    bitmap.stop();
+  };
+})();
+
+},{"../":1}]},{},[2]);
