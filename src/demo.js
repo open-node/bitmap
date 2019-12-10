@@ -14,9 +14,9 @@ const Bitmap = require("../");
   const $stop = document.getElementById("stop");
 
   const getFns = () => {
-    const red = new Function("x", "y", "f", $red.innerText);
-    const green = new Function("x", "y", "f", $green.innerText);
-    const blue = new Function("x", "y", "f", $blue.innerText);
+    const red = new Function("x", "y", "f", $red.value.trim());
+    const green = new Function("x", "y", "f", $green.value.trim());
+    const blue = new Function("x", "y", "f", $blue.value.trim());
 
     return { red, green, blue };
   };

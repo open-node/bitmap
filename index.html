@@ -15,7 +15,15 @@ div, h3 {
   float:left;
   width: 400px;
 }
+#code .tips {
+  margin-bottom: 10px;
+  background: #f6f6f6;
+  border-radius: 2px;
+  border: 1px solid #eee;
+  padding: 10px;
+}
 #code .box {
+  border-radius: 2px;
   border: 1px solid #eee;
   margin-bottom: 10px;
   display: block;
@@ -30,8 +38,11 @@ div, h3 {
   line-height: 26px;
   height: 26px;
 }
-#code .box div {
-  padding: 5px 10px;
+#code .box textarea {
+  padding: 5px;
+  width: 100%;
+  border: 0px;
+  height: 72px;
 }
 </style>
 </head>
@@ -40,23 +51,23 @@ div, h3 {
   您的浏览器太老了，不支持canvas，请用最新版chrome打开此页
 </canvas>
 <div id="code">
-<div class="box">
-  <h3>Red</h3>
-  <div id="red" contenteditable="true">return (Math.random() * 256) % 256</div>
-</div>
-<div class="box">
-  <h3>Green</h3>
-  <div id="green" contenteditable="true">return (Math.random() * 256) % 256</div>
-</div>
-<div class="box">
-  <h3>Blue</h3>
-  <div id="blue" contenteditable="true">return (Math.random() * 256) % 256</div>
-</div>
-<button id="draw">绘制</button>
-<button id="play">播放</button>
-<button id="stop">停止</button>
+  <div class="tips">参数有 x, y, f 分别代表x坐标，y坐标，帧计数</div>
+  <div class="box">
+    <h3>Red</h3>
+    <textarea id="red" rows="3">return (Math.random() * 256) % 256</textarea>
+  </div>
+  <div class="box">
+    <h3>Green</h3>
+    <textarea id="green" rows="3">return (Math.random() * 256) % 256</textarea>
+  </div>
+  <div class="box">
+    <h3>Blue</h3>
+    <textarea id="blue" rows="3">return (Math.random() * 256) % 256</textarea>
+  </div>
+  <button id="draw">绘制</button>
+  <button id="play">播放</button>
+  <button id="stop">停止</button>
 </div>
 <script src="./demo.js"></script>
 </body>
 </html>
-
