@@ -205,7 +205,7 @@ const API_ROOT =
     }
   };
 
-  if (location.hash) loadItem(location.hash.slice(1));
+  if (location.hash) loadItem(location.hash.split("?")[0].slice(1));
 })();
 
 },{"../":1}]},{},[2]);
