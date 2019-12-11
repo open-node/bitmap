@@ -49,9 +49,9 @@ function Bitmap(canvas) {
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
         const start = 4 * (y * width + x);
-        data.data[start] = this.red(x, y, fno);
-        data.data[start + 1] = this.green(x, y, fno);
-        data.data[start + 2] = this.blue(x, y, fno);
+        data.data[start] = this.red(x, y, fno) & 255;
+        data.data[start + 1] = this.green(x, y, fno) & 255;
+        data.data[start + 2] = this.blue(x, y, fno) & 255;
       }
     }
     ctx.putImageData(data, 0, 0, 0, 0, width, height);
