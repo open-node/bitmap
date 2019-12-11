@@ -6,7 +6,7 @@
  */
 function Bitmap(canvas) {
   // 帧计数器
-  let fno = 0;
+  let fno = 1;
 
   // 动画是否执行中
   let animating = false;
@@ -46,11 +46,6 @@ function Bitmap(canvas) {
    * @return {void}
    */
   const draw = () => {
-    if (animating) {
-      fno += 1;
-      requestAnimationFrame(draw);
-    }
-
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
         const start = 4 * (y * width + x);
@@ -60,6 +55,11 @@ function Bitmap(canvas) {
       }
     }
     ctx.putImageData(data, 0, 0, 0, 0, width, height);
+
+    if (animating) {
+      fno += 1;
+      requestAnimationFrame(draw);
+    }
   };
 
   /**
@@ -76,6 +76,17 @@ function Bitmap(canvas) {
   };
 
   /**
+   * 重置帧计数
+   * @memberof Bitmap
+   * @instance
+   *
+   * @return {void}
+   */
+  const resetFno = () => {
+    fno = 1;
+  };
+
+  /**
    * 动画绘制关闭
    * @memberof Bitmap
    * @instance
@@ -86,7 +97,7 @@ function Bitmap(canvas) {
     animating = false;
   };
 
-  return { init, draw, play, stop };
+  return { init, draw, play, stop, resetFno };
 }
 
 module.exports = Bitmap;
@@ -94,7 +105,25 @@ module.exports = Bitmap;
 },{}],2:[function(require,module,exports){
 const Bitmap = require("../");
 
+const dict = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const random = len => {
+  const { length } = dict;
+  let ret = "";
+  for (let i = 0; i < len; i += 1) ret += dict[(Math.random() * length) | 0];
+
+  return ret;
+};
+
+const API_ROOT =
+  "https://1360695010715089.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy";
+
 (() => {
+  const uid = localStorage.uuid || random(32);
+  if (!localStorage.uuid) localStorage.uuid = uid;
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("X-Auth-UUID", uid);
+
   const canvas = document.getElementById("my-canvas");
   const bitmap = Bitmap(canvas);
   window.bitmap = bitmap;
@@ -107,6 +136,9 @@ const Bitmap = require("../");
   const $play = document.getElementById("play");
   const $stop = document.getElementById("stop");
 
+  const $save = document.getElementById("save");
+  const $load = document.getElementById("load");
+
   const getFns = () => {
     const red = new Function("x", "y", "f", $red.value.trim());
     const green = new Function("x", "y", "f", $green.value.trim());
@@ -118,6 +150,7 @@ const Bitmap = require("../");
   $draw.onclick = () => {
     const { red, green, blue } = getFns();
     bitmap.init(red, green, blue);
+    bitmap.resetFno();
     bitmap.draw();
   };
 
@@ -130,6 +163,49 @@ const Bitmap = require("../");
   $stop.onclick = () => {
     bitmap.stop();
   };
+
+  $save.onclick = async () => {
+    const red = $red.value.trim();
+    const green = $green.value.trim();
+    const blue = $blue.value.trim();
+
+    const url = `${API_ROOT}/bitmap/save/`;
+    const request = new Request(url);
+    try {
+      const response = await fetch(request, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ red, green, blue }),
+        headers
+      });
+
+      const log = await response.json();
+      location.hash = log.id;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const loadItem = async id => {
+    const url = `${API_ROOT}/bitmap/item/?id=${id}`;
+    const request = new Request(url);
+    try {
+      const response = await fetch(request, {
+        method: "GET",
+        mode: "cors",
+        headers
+      });
+
+      const log = await response.json();
+      $red.value = log.red;
+      $green.value = log.green;
+      $blue.value = log.blue;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  if (location.hash) loadItem(location.hash.slice(1));
 })();
 
 },{"../":1}]},{},[2]);

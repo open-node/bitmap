@@ -5,7 +5,7 @@
  */
 function Bitmap(canvas) {
   // 帧计数器
-  let fno = 0;
+  let fno = 1;
 
   // 动画是否执行中
   let animating = false;
@@ -45,11 +45,6 @@ function Bitmap(canvas) {
    * @return {void}
    */
   const draw = () => {
-    if (animating) {
-      fno += 1;
-      requestAnimationFrame(draw);
-    }
-
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
         const start = 4 * (y * width + x);
@@ -59,6 +54,11 @@ function Bitmap(canvas) {
       }
     }
     ctx.putImageData(data, 0, 0, 0, 0, width, height);
+
+    if (animating) {
+      fno += 1;
+      requestAnimationFrame(draw);
+    }
   };
 
   /**
@@ -75,6 +75,17 @@ function Bitmap(canvas) {
   };
 
   /**
+   * 重置帧计数
+   * @memberof Bitmap
+   * @instance
+   *
+   * @return {void}
+   */
+  const resetFno = () => {
+    fno = 1;
+  };
+
+  /**
    * 动画绘制关闭
    * @memberof Bitmap
    * @instance
@@ -85,7 +96,7 @@ function Bitmap(canvas) {
     animating = false;
   };
 
-  return { init, draw, play, stop };
+  return { init, draw, play, stop, resetFno };
 }
 
 module.exports = Bitmap;
