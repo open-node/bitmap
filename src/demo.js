@@ -84,7 +84,7 @@ const API_ROOT =
         location.hash = "";
         throw Error(log.message || response.statusText);
       }
-      $code.value = log.code;
+      $fn.value = log.code;
     } catch (e) {
       alert(e.message);
     }
