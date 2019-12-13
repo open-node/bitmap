@@ -12,6 +12,8 @@ function Bitmap(canvas) {
 
   const ctx = canvas.getContext("2d");
   const { height, width } = canvas;
+  const xr = [0 - (width >> 1), width >> 1];
+  const yr = [0 - (height >> 1), height >> 1];
 
   const data = ctx.getImageData(0, 0, width, height);
   for (let y = 0; y < height; y += 1) {
@@ -45,8 +47,8 @@ function Bitmap(canvas) {
    * @return {void}
    */
   const draw = () => {
-    for (let y = 0; y < height; y += 1) {
-      for (let x = 0; x < width; x += 1) {
+    for (let y = yr[0]; y < yr[1]; y += 1) {
+      for (let x = xr[0]; x < xr[1]; x += 1) {
         const start = 4 * (y * width + x);
         data.data[start] = this.red(x, y, fno) & 255;
         data.data[start + 1] = this.green(x, y, fno) & 255;
