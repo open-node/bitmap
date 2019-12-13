@@ -48,12 +48,13 @@ function Bitmap(canvas) {
    * @return {void}
    */
   const draw = () => {
+    let start = 0;
     for (let y = yr[0]; y < yr[1]; y += 1) {
       for (let x = xr[0]; x < xr[1]; x += 1) {
-        const start = 4 * (y * width + x);
         data.data[start] = this.red(x, y, fno) & 255;
         data.data[start + 1] = this.green(x, y, fno) & 255;
         data.data[start + 2] = this.blue(x, y, fno) & 255;
+        start += 4;
       }
     }
     ctx.putImageData(data, 0, 0, 0, 0, width, height);
