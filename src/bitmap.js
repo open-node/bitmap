@@ -10,6 +10,9 @@ function Bitmap(canvas) {
   // 动画是否执行中
   let animating = false;
 
+  // rgb 函数
+  let rgb = null;
+
   const ctx = canvas.getContext("2d");
   const { height, width } = canvas;
   const xr = [0 - (width >> 1), width >> 1];
@@ -27,16 +30,12 @@ function Bitmap(canvas) {
    * 初始化r,g,b函数
    * @memberof Bitmap
    * @instance
-   * @param {function} red
-   * @param {function} green
-   * @param {function} blue
+   * @param {function} fn
    *
    * @return {void}
    */
-  const init = (red, green, blue) => {
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+  const init = fn => {
+    rgb = fn();
   };
 
   /**
@@ -50,9 +49,10 @@ function Bitmap(canvas) {
     let start = 0;
     for (let y = yr[0]; y < yr[1]; y += 1) {
       for (let x = xr[0]; x < xr[1]; x += 1) {
-        data.data[start] = this.red(x, y, fno) & 255;
-        data.data[start + 1] = this.green(x, y, fno) & 255;
-        data.data[start + 2] = this.blue(x, y, fno) & 255;
+        const rgbv = rgb(x, y, fno);
+        data.data[start] = rgbv[0] & 255;
+        data.data[start + 1] = rgbv[1] & 255;
+        data.data[start + 2] = rgbv[2] & 255;
         start += 4;
       }
     }

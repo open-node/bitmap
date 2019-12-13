@@ -11,9 +11,6 @@ function Bitmap(canvas) {
   // 动画是否执行中
   let animating = false;
 
-  // rgb 函数
-  let rgb = null;
-
   const ctx = canvas.getContext("2d");
   const { height, width } = canvas;
   const xr = [0 - (width >> 1), width >> 1];
@@ -31,12 +28,16 @@ function Bitmap(canvas) {
    * 初始化r,g,b函数
    * @memberof Bitmap
    * @instance
-   * @param {function} fn
+   * @param {function} red
+   * @param {function} green
+   * @param {function} blue
    *
    * @return {void}
    */
-  const init = fn => {
-    rgb = fn();
+  const init = (red, green, blue) => {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   };
 
   /**
@@ -50,10 +51,9 @@ function Bitmap(canvas) {
     let start = 0;
     for (let y = yr[0]; y < yr[1]; y += 1) {
       for (let x = xr[0]; x < xr[1]; x += 1) {
-        const rgbv = rgb(x, y, fno);
-        data.data[start] = rgbv[0] & 255;
-        data.data[start + 1] = rgbv[1] & 255;
-        data.data[start + 2] = rgbv[2] & 255;
+        data.data[start] = this.red(x, y, fno) & 255;
+        data.data[start + 1] = this.green(x, y, fno) & 255;
+        data.data[start + 2] = this.blue(x, y, fno) & 255;
         start += 4;
       }
     }
@@ -131,25 +131,35 @@ const API_ROOT =
   const bitmap = Bitmap(canvas);
   window.bitmap = bitmap;
 
-  const $fn = document.getElementById("fn");
+  const $red = document.getElementById("red");
+  const $green = document.getElementById("green");
+  const $blue = document.getElementById("blue");
 
   const $draw = document.getElementById("draw");
   const $play = document.getElementById("play");
   const $stop = document.getElementById("stop");
 
   const $save = document.getElementById("save");
-  // const $load = document.getElementById("load");
+  const $load = document.getElementById("load");
 
-  const makeFn = () => new Function($fn.value.trim());
+  const getFns = () => {
+    const red = new Function("x", "y", "f", $red.value.trim());
+    const green = new Function("x", "y", "f", $green.value.trim());
+    const blue = new Function("x", "y", "f", $blue.value.trim());
+
+    return { red, green, blue };
+  };
 
   $draw.onclick = () => {
-    bitmap.init(makeFn());
+    const { red, green, blue } = getFns();
+    bitmap.init(red, green, blue);
     bitmap.resetFno();
     bitmap.draw();
   };
 
   $play.onclick = () => {
-    bitmap.init(makeFn());
+    const { red, green, blue } = getFns();
+    bitmap.init(red, green, blue);
     bitmap.play();
   };
 
@@ -158,7 +168,9 @@ const API_ROOT =
   };
 
   $save.onclick = async () => {
-    const code = $fn.value.trim();
+    const red = $red.value.trim();
+    const green = $green.value.trim();
+    const blue = $blue.value.trim();
 
     const url = `${API_ROOT}/bitmap/save/`;
     const request = new Request(url);
@@ -166,7 +178,7 @@ const API_ROOT =
       const response = await fetch(request, {
         method: "POST",
         mode: "cors",
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ red, green, blue }),
         headers
       });
 
@@ -192,7 +204,9 @@ const API_ROOT =
         location.hash = "";
         throw Error(log.message || response.statusText);
       }
-      $code.value = log.code;
+      $red.value = log.red;
+      $green.value = log.green;
+      $blue.value = log.blue;
     } catch (e) {
       alert(e.message);
     }
