@@ -92,6 +92,10 @@ const API_ROOT =
       });
 
       const log = await response.json();
+      if (400 <= response.status) {
+        location.hash = "";
+        throw Error(log.message || response.statusText);
+      }
       $red.value = log.red;
       $green.value = log.green;
       $blue.value = log.blue;
