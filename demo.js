@@ -14,6 +14,8 @@ function Bitmap(canvas) {
   // rgb 函数
   let rgb = null;
 
+  const rgbv = [];
+
   const ctx = canvas.getContext("2d");
   const { height, width } = canvas;
   const xr = [0 - (width >> 1), width >> 1];
@@ -48,9 +50,9 @@ function Bitmap(canvas) {
    */
   const draw = () => {
     let start = 0;
-    for (let y = yr[0]; y < yr[1]; y += 1) {
+    for (let y = yr[1]; yr[0] < y; y -= 1) {
       for (let x = xr[0]; x < xr[1]; x += 1) {
-        const rgbv = rgb(x, y, fno);
+        rgb(x, y, fno, rgbv);
         data.data[start] = rgbv[0] & 255;
         data.data[start + 1] = rgbv[1] & 255;
         data.data[start + 2] = rgbv[2] & 255;
@@ -145,6 +147,7 @@ const API_ROOT =
   $draw.onclick = () => {
     bitmap.init(makeFn());
     bitmap.resetFno();
+    bitmap.stop();
     bitmap.draw();
   };
 

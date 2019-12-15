@@ -37,6 +37,7 @@ const API_ROOT =
   $draw.onclick = () => {
     bitmap.init(makeFn());
     bitmap.resetFno();
+    bitmap.stop();
     bitmap.draw();
   };
 
